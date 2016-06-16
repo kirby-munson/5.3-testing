@@ -1,6 +1,8 @@
 var expect = chai.expect;
 var $ = require('jquery');
 var Post = require('../app/scripts/models');
+var Index = require('../app/scripts/index')
+
 
 /**
  * Write some tests to test the Post Model
@@ -37,3 +39,21 @@ describe('Post', function(){
 });
 
 // PUT YOUR TESTS HERE!!!
+
+describe('create post form', function(){
+  it('should trigger a create:post event on the document with the title and body', function (done) {
+      $(document).on('create:post', function(event, data){
+      expect(data).to.have.property('title');
+      expect(data).to.have.property('body');
+      expect(data.title).to.equal('Cool dude');
+      expect(data.body).to.equal('Cooler than you');
+      done();
+        });
+        $('.blog-title').val('Cool dude');
+        $('.blog-body').val('Cooler than you');
+        $('#post-form').submit();
+
+        $(document).trigger('create:post', [{'title': 'Cool', 'body': 'Cooler'}]);
+
+      });
+    });
